@@ -1,0 +1,1009 @@
+Update the existing EcoPredict frontend by replacing the current Renewable Energy survey with a polished, user-friendly GUIDED ASSESSMENT experience.
+
+IMPORTANT:
+- This is FRONTEND ONLY.
+- Do NOT implement the ML model.
+- Do NOT implement a backend.
+- Do NOT connect real environmental APIs yet.
+- Do NOT redesign the rest of EcoPredict.
+- Preserve the existing EcoPredict navigation, authentication, location system, typography and visual identity.
+- Use mock data only for the prototype result.
+- The collected answers must be stored in one structured object so they can later be passed to the backend/ML model.
+
+==================================================
+CORE EXPERIENCE
+==================================================
+
+When the user clicks:
+
+Renewable Energy
+
+from the EcoPredict Service Hub:
+
+Service Hub
+    ↓
+Renewable Energy
+    ↓
+Guided Assessment
+    ↓
+Review
+    ↓
+Analyze
+    ↓
+Prototype Result
+
+The assessment should NOT feel like a long technical form.
+
+It should feel like EcoPredict is asking the user a few simple questions to understand their situation.
+
+Use conversational but professional wording.
+
+The experience should answer:
+
+"What are you trying to power?"
+"How much energy do you use?"
+"Where could renewable equipment go?"
+"What matters most to you?"
+
+Do NOT use technical terminology unless absolutely necessary.
+
+==================================================
+PAGE 1 — INTRODUCTION
+==================================================
+
+Route:
+
+/platform/energy
+
+Heading:
+
+"Let's understand your energy needs."
+
+Subtitle:
+
+"A few simple questions will help EcoPredict understand what kind of renewable energy solution could fit your situation."
+
+Supporting text:
+
+"You don't need to know technical energy terms. Just provide what you know, and EcoPredict will handle the technical analysis later."
+
+Show:
+
+Estimated time:
+"2–3 minutes"
+
+Small visual progress indicator:
+
+"Guided assessment"
+
+Primary button:
+
+"Start Assessment →"
+
+Secondary:
+
+"Back to Services"
+
+Use a clean premium layout with plenty of whitespace.
+
+==================================================
+PERSISTENT LOCATION
+==================================================
+
+Use the location already selected through EcoPredict's existing location-selection system.
+
+At the top of the assessment show:
+
+📍 Coimbatore, Tamil Nadu
+
+with:
+
+"Change"
+
+If no location has been selected:
+
+navigate to the existing location selector.
+
+DO NOT create another map/location-selection system.
+
+The user should NOT be asked for:
+
+- solar radiation
+- wind speed
+- rainfall
+- temperature
+- elevation
+- terrain
+- solar irradiance
+- wind speed
+
+Those will eventually come from environmental datasets/APIs.
+
+==================================================
+GUIDED ASSESSMENT STRUCTURE
+==================================================
+
+Create 5 simple stages:
+
+1. YOUR PROJECT
+2. YOUR ENERGY
+3. YOUR SPACE
+4. YOUR NEEDS
+5. YOUR PRIORITIES
+
+At the top show:
+
+"Step 1 of 5"
+
+and a subtle progress bar.
+
+Example:
+
+YOUR PROJECT
+━━━━━━○━━━━━━━━━━━━━━━━
+
+The progress should update smoothly.
+
+Allow:
+
+← Back
+
+Continue →
+
+Do not show all questions simultaneously.
+
+==================================================
+STEP 1 — YOUR PROJECT
+==================================================
+
+Heading:
+
+"What are you planning to power?"
+
+Subtitle:
+
+"Choose the option that best describes your project."
+
+Large selectable cards:
+
+🏠 Home
+"House or residential property"
+
+🏢 Business
+"Office, shop or commercial building"
+
+🏭 Industry
+"Factory or industrial facility"
+
+🌾 Agriculture
+"Farm, irrigation or agricultural operation"
+
+🏫 Institution
+"School, college, hospital or other institution"
+
+➕ Other
+"Something else"
+
+Use cards rather than dropdowns.
+
+When selected:
+
+- subtle border change
+- light gold background
+- small check indicator
+
+Store:
+
+useCase
+
+Continue button becomes active only after selection.
+
+==================================================
+STEP 2 — YOUR ENERGY
+==================================================
+
+Heading:
+
+"How much electricity do you use?"
+
+Subtitle:
+
+"An estimate is completely fine. You don't need to know the exact number."
+
+First question:
+
+"Do you know your electricity usage?"
+
+Two choices:
+
+"I know my usage"
+
+"I'm not sure"
+
+--------------------------------
+IF USER KNOWS USAGE
+--------------------------------
+
+Show:
+
+"About how much electricity do you use each month?"
+
+Input:
+
+[ ______ ]
+
+Unit:
+
+kWh / month
+
+Helper:
+
+"You can usually find this on your electricity bill."
+
+--------------------------------
+IF USER DOES NOT KNOW
+--------------------------------
+
+Show:
+
+"No problem. About how much is your usual electricity bill?"
+
+Input:
+
+[ ₹ ______ ]
+
+Unit:
+
+per month
+
+Helper:
+
+"We can use this as an estimate for now."
+
+Store:
+
+electricity:
+{
+  inputType: "consumption" | "bill",
+  monthlyConsumptionKWh: null,
+  monthlyBill: null
+}
+
+Then ask:
+
+"When do you use the most electricity?"
+
+Options:
+
+☀️ Mostly during the day
+
+🌙 Mostly at night
+
+🔄 Throughout the day
+
+📅 It changes with the season
+
+❓ I'm not sure
+
+Store:
+
+usagePattern
+
+Then ask:
+
+"Do you expect your electricity use to change in the future?"
+
+Options:
+
+"Stay about the same"
+
+"Increase a little"
+
+"Increase significantly"
+
+"Decrease"
+
+"Not sure"
+
+Store:
+
+futureEnergyDemand
+
+==================================================
+STEP 3 — YOUR SPACE
+==================================================
+
+Heading:
+
+"Where could renewable equipment go?"
+
+Subtitle:
+
+"This helps us understand what physical space may be available."
+
+Question:
+
+"Where could you install renewable energy equipment?"
+
+Cards:
+
+🏠 Rooftop
+
+"Space on a building roof"
+
+🌳 Open land
+
+"Ground or unused land"
+
+🏠🌳 Both
+
+"Rooftop and open land"
+
+❓ Not sure
+
+"I'm not sure yet"
+
+Store:
+
+installationSpaceType
+
+Then ask:
+
+"Do you know approximately how much space is available?"
+
+Options:
+
+"Yes, I know"
+
+"I'm not sure"
+
+--------------------------------
+IF YES
+--------------------------------
+
+Show:
+
+"Approximately how much space?"
+
+Input:
+
+[ ______ ]
+
+Unit:
+
+m²
+
+Helper:
+
+"An approximate value is enough."
+
+Store:
+
+availableAreaM2
+
+--------------------------------
+IF NOT SURE
+--------------------------------
+
+Do NOT require an area.
+
+Show:
+
+"That's okay. EcoPredict can work with the information available."
+
+Store:
+
+areaKnown: false
+
+==================================================
+STEP 4 — YOUR NEEDS
+==================================================
+
+Heading:
+
+"How important is reliable power to you?"
+
+Subtitle:
+
+"Tell us what you need from your energy system."
+
+Question:
+
+"How reliable is your current electricity supply?"
+
+Options:
+
+🟢 Very reliable
+
+🟡 Occasional outages
+
+🔴 Frequent outages
+
+❓ Not sure
+
+Store:
+
+gridReliability
+
+Then:
+
+"If the power goes out, do you need important equipment to keep running?"
+
+Options:
+
+"No"
+
+"Yes, for a short time"
+
+"Yes, for several hours"
+
+"I'm not sure"
+
+Store:
+
+backupRequirement
+
+IF user selects a backup requirement:
+
+Ask:
+
+"How long would you ideally need backup power?"
+
+Options:
+
+"1–2 hours"
+
+"2–6 hours"
+
+"6–12 hours"
+
+"More than 12 hours"
+
+"Not sure"
+
+Store:
+
+backupDuration
+
+Then ask:
+
+"How do you expect your energy needs to change?"
+
+Options:
+
+"Stay similar"
+
+"Increase a little"
+
+"Increase significantly"
+
+"I'm not sure"
+
+Store:
+
+futureEnergyDemand
+
+==================================================
+STEP 5 — YOUR PRIORITIES
+==================================================
+
+Heading:
+
+"What matters most to you?"
+
+Subtitle:
+
+"There can be more than one good option. Tell us what you care about most."
+
+Allow MULTIPLE selections.
+
+Options:
+
+💰 Lower electricity bills
+
+🌱 Reduce carbon emissions
+
+🔌 Reduce dependence on the grid
+
+🛡 Keep power available during outages
+
+☀️ Use more renewable energy
+
+📈 Long-term investment
+
+Store:
+
+priorities: []
+
+At least one priority should be selected.
+
+Then show an optional question:
+
+"Do you have a budget in mind?"
+
+Options:
+
+"Under ₹2 lakh"
+
+"₹2–5 lakh"
+
+"₹5–10 lakh"
+
+"₹10–25 lakh"
+
+"More than ₹25 lakh"
+
+"I'm not sure"
+
+"Prefer not to say"
+
+Store:
+
+budgetRange
+
+Make this optional.
+
+==================================================
+SMART GUIDANCE
+==================================================
+
+The assessment should feel intelligent even though it is currently frontend-only.
+
+Examples:
+
+If user chooses:
+
+Factory
+
+show a small contextual note:
+
+"Industrial facilities can have very different energy needs. We'll use your electricity usage to understand the scale of the solution."
+
+If user chooses:
+
+Agriculture
+
+show:
+
+"For agricultural projects, electricity use and available land can be particularly important."
+
+If user selects:
+
+"I'm not sure"
+
+do NOT make them feel like they answered incorrectly.
+
+Use:
+
+"That's completely fine. We'll work with the information you have."
+
+Do NOT pretend that the frontend is performing real intelligence.
+
+==================================================
+OPTIONAL ADVANCED INFORMATION
+==================================================
+
+At the bottom of the final step include:
+
+"Have detailed energy information?"
+
+Expandable section:
+
+"Advanced information +"
+
+Inside, allow optional fields:
+
+- Peak electricity demand (kW)
+- Exact electricity price (₹/kWh)
+- Operating hours per day
+- Detailed notes
+
+These should NEVER be required.
+
+Normal users should never need to open this section.
+
+==================================================
+REVIEW SCREEN
+==================================================
+
+After Step 5:
+
+Show:
+
+"Here's what we know about your project."
+
+Subtitle:
+
+"Check your answers before we begin the analysis."
+
+Create clean summary sections.
+
+PROJECT
+
+📍 Location
+[location]
+
+🏢 Project type
+[use case]
+
+ENERGY
+
+⚡ Electricity usage
+[value]
+
+☀️ Main usage period
+[value]
+
+📈 Future energy needs
+[value]
+
+SPACE
+
+🏠 Installation space
+[value]
+
+📐 Available area
+[value or "Not specified"]
+
+POWER NEEDS
+
+🔌 Grid reliability
+[value]
+
+🛡 Backup requirement
+[value]
+
+PRIORITIES
+
+Show selected priority chips.
+
+BUDGET
+
+[value or "Not specified"]
+
+Every section should have:
+
+"Edit"
+
+which takes the user back to the appropriate step.
+
+==================================================
+FINAL CTA
+==================================================
+
+At the bottom:
+
+"Ready to explore your renewable options?"
+
+Supporting text:
+
+"EcoPredict will combine your information with environmental and geographic data to evaluate suitable renewable energy options."
+
+IMPORTANT:
+
+Since real APIs and ML are NOT connected yet, do not claim that this analysis is actually happening.
+
+Button:
+
+"Analyze Renewable Potential →"
+
+==================================================
+FRONTEND DATA OBJECT
+==================================================
+
+Store all answers in ONE centralized object.
+
+Use a structure similar to:
+
+{
+  location: {
+    name: "",
+    region: "",
+    country: "",
+    latitude: null,
+    longitude: null
+  },
+
+  useCase: "",
+
+  electricity: {
+    inputType: "",
+    monthlyConsumptionKWh: null,
+    monthlyBill: null
+  },
+
+  usagePattern: "",
+
+  futureEnergyDemand: "",
+
+  installation: {
+    spaceType: "",
+    areaKnown: false,
+    availableAreaM2: null
+  },
+
+  grid: {
+    reliability: "",
+    backupRequired: "",
+    backupDuration: ""
+  },
+
+  priorities: [],
+
+  budgetRange: "",
+
+  advanced: {
+    peakDemandKW: null,
+    electricityPricePerKWh: null,
+    operatingHoursPerDay: null,
+    notes: ""
+  }
+}
+
+Use React state/context or the existing state architecture.
+
+Do not scatter survey values across unrelated components.
+
+==================================================
+SUBMISSION
+==================================================
+
+When the user clicks:
+
+"Analyze Renewable Potential"
+
+perform frontend validation.
+
+Then pass the complete assessment object to a placeholder service:
+
+analyzeRenewableEnergy(assessmentData)
+
+Create:
+
+/services/renewableEnergyService.js
+
+For now this function should ONLY return mock data.
+
+Example:
+
+export async function analyzeRenewableEnergy(assessmentData) {
+    return mockRenewableResult;
+}
+
+Do NOT implement ML.
+
+Do NOT implement API calls.
+
+Do NOT implement backend logic.
+
+The purpose is to establish the frontend-to-analysis boundary.
+
+==================================================
+LOADING STATE
+==================================================
+
+After submission:
+
+Navigate to:
+
+/platform/energy/results
+
+Show a short loading state:
+
+"Preparing your renewable energy assessment..."
+
+Subtext:
+
+"EcoPredict is organizing your project information."
+
+Do NOT say:
+
+"Running machine learning..."
+
+"AI is calculating..."
+
+"Processing satellite data..."
+
+because none of those systems are connected yet.
+
+After the mock loading state, display the prototype results page.
+
+==================================================
+PROTOTYPE RESULTS
+==================================================
+
+Create a polished placeholder results page.
+
+At the very top display:
+
+"PROTOTYPE RESULT"
+
+Then:
+
+"Your Renewable Energy Assessment"
+
+Location:
+
+📍 [selected location]
+
+Main recommendation card:
+
+"Solar PV"
+
+"High suitability"
+
+Add:
+
+"Example result — real environmental and ML analysis will be connected later."
+
+Show:
+
+WHY THIS OPTION?
+
+Example mock factors:
+
+Strong solar potential
+Suitable energy-use pattern
+Suitable installation space
+Potential to reduce grid dependence
+
+Then:
+
+OTHER OPTIONS CONSIDERED
+
+Solar
+Wind
+Hybrid
+
+Do NOT claim these are actual predictions.
+
+The result page should be designed so that the mock result can later be replaced by real ML output without redesigning the UI.
+
+==================================================
+VISUAL STYLE
+==================================================
+
+Maintain EcoPredict's existing visual identity:
+
+Background:
+#F7F6F2
+
+White:
+#FFFFFF
+
+Primary text:
+#242424
+
+Secondary text:
+#66645F
+
+Borders:
+#D9D7D0
+
+Primary gold:
+#B08D3C
+
+Light gold:
+#F4EEDC
+
+Design language:
+
+- premium
+- scientific
+- calm
+- geospatial
+- trustworthy
+- minimal
+- professional
+
+Avoid:
+
+- neon
+- cyberpunk
+- excessive gradients
+- excessive glassmorphism
+- glowing borders
+- futuristic HUDs
+- generic AI dashboard styling
+
+Use subtle transitions between assessment steps.
+
+Do NOT use excessive animations.
+
+==================================================
+RESPONSIVE DESIGN
+==================================================
+
+Desktop:
+- centered assessment container
+- comfortable reading width
+- large selection cards
+- progress indicator
+
+Tablet:
+- responsive cards
+- reduced spacing
+
+Mobile:
+- single-column cards
+- large touch targets
+- sticky bottom navigation
+- readable inputs
+- no horizontal scrolling
+
+The assessment should feel natural on a phone.
+
+==================================================
+ACCESSIBILITY
+==================================================
+
+Ensure:
+
+- keyboard navigation
+- visible focus states
+- proper labels
+- accessible buttons
+- sufficient contrast
+- semantic HTML
+- selectable cards work with keyboard
+- error messages are understandable
+
+==================================================
+IMPORTANT UX RULE
+==================================================
+
+NEVER make the user feel like they are filling out an engineering form.
+
+The user should feel like:
+
+"EcoPredict is asking me a few simple questions so it can understand what I need."
+
+NOT:
+
+"I need to understand renewable energy engineering before I can use this."
+
+==================================================
+FINAL USER JOURNEY
+==================================================
+
+Service Hub
+      ↓
+Renewable Energy
+      ↓
+"Let's understand your energy needs."
+      ↓
+Start Assessment
+      ↓
+1. Your Project
+      ↓
+2. Your Energy
+      ↓
+3. Your Space
+      ↓
+4. Your Needs
+      ↓
+5. Your Priorities
+      ↓
+Review
+      ↓
+Analyze Renewable Potential
+      ↓
+Frontend Mock Analysis
+      ↓
+Prototype Results
+
+Future:
+
+Assessment Data
+      ↓
+Backend
+      ↓
+Environmental APIs
+      ↓
+ML Model
+      ↓
+Renewable Energy Recommendation
+      ↓
+Results
+
+Implement this entire guided assessment flow without modifying unrelated parts of EcoPredict.

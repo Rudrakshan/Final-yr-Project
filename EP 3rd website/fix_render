@@ -1,0 +1,379 @@
+Optimize the EcoPredict landing page scroll performance.
+
+IMPORTANT:
+Do NOT redesign the landing page.
+Do NOT remove the cinematic scroll-driven Earth animation.
+Keep the existing visual design, sections, typography, content, and interactions.
+
+The current scroll experience is lagging/stuttering, especially while the Earth frame animation changes.
+
+Optimize the implementation for smooth 60 FPS scrolling.
+
+==================================================
+1. OPTIMIZE SCROLL EVENT HANDLING
+==================================================
+
+Do NOT perform React state updates on every scroll event.
+
+Do NOT use expensive calculations directly inside:
+
+window.addEventListener("scroll", ...)
+
+Use requestAnimationFrame to throttle scroll-driven updates.
+
+Use a pattern similar to:
+
+let ticking = false;
+
+window.addEventListener("scroll", () => {
+    if (!ticking) {
+        requestAnimationFrame(() => {
+            updateScrollProgress();
+            ticking = false;
+        });
+
+        ticking = true;
+    }
+});
+
+The animation loop should run at most once per browser frame.
+
+Prefer passive listeners:
+
+window.addEventListener("scroll", handler, { passive: true });
+
+==================================================
+2. DO NOT RE-RENDER THE ENTIRE REACT COMPONENT
+==================================================
+
+The Earth frame animation must NOT cause the entire landing page to re-render.
+
+Avoid:
+
+setCurrentFrame(...)
+
+on every scroll update if that causes a full React component render.
+
+Use:
+
+- useRef
+- requestAnimationFrame
+- direct canvas drawing
+
+where appropriate.
+
+The scroll position should control the animation without triggering unnecessary React renders.
+
+==================================================
+3. USE HTML CANVAS FOR THE EARTH FRAMES
+==================================================
+
+If the current implementation uses <img> elements for the 180 Earth frames, replace the frame-rendering mechanism with a single HTML canvas.
+
+Do NOT render 180 images simultaneously in the DOM.
+
+Use:
+
+<canvas>
+
+and draw only the currently required frame:
+
+ctx.drawImage(images[frameIndex], ...)
+
+This should dramatically reduce DOM/layout overhead.
+
+==================================================
+4. PRELOAD EARTH FRAMES INTELLIGENTLY
+==================================================
+
+There are approximately 180 WebP Earth frames.
+
+Do NOT load all 180 high-resolution images simultaneously if that causes memory pressure.
+
+Implement progressive loading.
+
+Priority:
+
+1. Load the first few frames immediately.
+2. Load nearby frames around the current scroll position.
+3. Continue loading remaining frames in the background.
+4. Keep already-loaded frames cached.
+5. Never block scrolling while frames are loading.
+
+Use:
+
+HTMLImageElement.decode()
+
+where supported.
+
+Example concept:
+
+const img = new Image();
+img.src = frameUrl;
+await img.decode();
+
+Do not decode dozens of images simultaneously.
+
+Use a small concurrency limit.
+
+==================================================
+5. PRELOAD BASED ON SCROLL POSITION
+==================================================
+
+When the user is near frame 40:
+
+Prioritize:
+
+35–45
+
+Then gradually preload:
+
+30–50
+
+Do not prioritize frames hundreds of positions away from the current frame.
+
+Use a rolling preload window.
+
+==================================================
+6. USE DEVICE PIXEL RATIO CAREFULLY
+==================================================
+
+Do not create an unnecessarily huge canvas.
+
+Use a reasonable devicePixelRatio limit.
+
+For example:
+
+const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+This prevents extremely high-resolution rendering from consuming excessive GPU/CPU resources.
+
+==================================================
+7. AVOID CANVAS RESIZING DURING SCROLL
+==================================================
+
+Do not repeatedly change:
+
+canvas.width
+canvas.height
+
+during scrolling.
+
+Calculate the canvas dimensions during:
+
+- initial load
+- window resize
+
+Then keep those dimensions stable while scrolling.
+
+==================================================
+8. OPTIMIZE IMAGE DRAWING
+==================================================
+
+Draw the Earth using:
+
+ctx.clearRect(...)
+ctx.drawImage(...)
+
+Avoid creating new canvas elements or Image objects for every frame.
+
+Reuse the same canvas and image objects.
+
+Do not convert images to base64 on every frame.
+
+Do not create blobs repeatedly.
+
+==================================================
+9. SEPARATE SCROLL PROGRESS FROM PAGE ANIMATION
+==================================================
+
+Calculate normalized scroll progress:
+
+progress = scrollPosition / scrollableSectionHeight
+
+Then convert:
+
+progress → frame index
+
+For example:
+
+frameIndex = Math.floor(progress * (TOTAL_FRAMES - 1))
+
+Do not use multiple independent scroll listeners for the Earth.
+
+Create one centralized scroll animation controller.
+
+==================================================
+10. REDUCE OTHER SCROLL-BASED EFFECTS
+==================================================
+
+Audit the page for:
+
+- parallax
+- blur
+- backdrop-filter
+- box-shadow animation
+- filters
+- transforms
+- opacity changes
+- Framer Motion scroll listeners
+
+Do not remove the visual effects completely.
+
+Instead:
+
+- prefer transform and opacity
+- avoid layout-triggering properties
+- reduce expensive blur
+- avoid animating width/height/top/left
+- avoid unnecessary backdrop-filter
+- use GPU-friendly transforms
+
+Prefer:
+
+transform: translate3d(...)
+opacity
+
+instead of:
+
+top
+left
+width
+height
+
+==================================================
+11. FRAMER MOTION OPTIMIZATION
+==================================================
+
+The project currently uses Framer Motion.
+
+Audit all scroll animations.
+
+Do not create dozens of useScroll/useTransform subscriptions unnecessarily.
+
+Use a small number of shared motion values where possible.
+
+Avoid animating large DOM trees on every scroll frame.
+
+Use:
+
+will-change: transform;
+
+ONLY on elements that are actually animated.
+
+Do not apply will-change to the entire page.
+
+==================================================
+12. EARTH CANVAS POSITIONING
+==================================================
+
+Keep the Earth visually fixed/sticky while the story content scrolls.
+
+Use:
+
+position: sticky;
+
+where appropriate rather than continuously calculating the Earth position with JavaScript.
+
+The scroll should control the Earth frame, not its physical DOM position.
+
+==================================================
+13. MOBILE OPTIMIZATION
+==================================================
+
+On mobile devices:
+
+- reduce Earth canvas resolution slightly
+- limit devicePixelRatio to 1.5–2
+- reduce preload concurrency
+- avoid expensive blur effects
+- respect prefers-reduced-motion
+
+Do not break the cinematic experience.
+
+==================================================
+14. REDUCED MOTION
+==================================================
+
+Respect:
+
+@media (prefers-reduced-motion: reduce)
+
+When enabled:
+
+- reduce or disable frame-by-frame animation
+- keep the page usable
+- do not create rapid motion
+
+==================================================
+15. CLEAN UP EVENT LISTENERS
+==================================================
+
+When the landing component unmounts:
+
+- remove scroll listeners
+- cancel requestAnimationFrame
+- cancel pending animation work
+- release unnecessary image references
+
+Avoid memory leaks.
+
+==================================================
+16. PERFORMANCE TARGET
+==================================================
+
+Target:
+
+60 FPS scrolling on modern desktop hardware.
+
+Scrolling should feel continuous even while the Earth frame changes.
+
+There should be:
+
+NO:
+- visible stutter
+- frame flashing
+- delayed scroll response
+- excessive CPU usage
+- excessive memory usage
+- repeated image downloads
+- React re-rendering of the entire page per frame
+
+==================================================
+17. IMPORTANT: DO NOT BREAK THE EARTH EXPERIENCE
+==================================================
+
+The final result must still have:
+
+- cinematic Earth
+- scroll-driven Earth rotation/animation
+- existing story sections
+- existing EcoPredict branding
+- existing navigation
+- existing CTA buttons
+- existing visual hierarchy
+
+Only the underlying performance implementation should change.
+
+==================================================
+18. VERIFY USING BROWSER DEVTOOLS
+==================================================
+
+After optimization:
+
+1. Open Chrome DevTools.
+2. Open Performance.
+3. Record scrolling through the entire landing page.
+4. Check FPS.
+5. Check long tasks.
+6. Check excessive scripting.
+7. Check memory usage.
+8. Check network requests.
+9. Confirm Earth frames are not downloaded repeatedly.
+10. Confirm there are no console errors.
+
+Fix any remaining performance bottlenecks.
+
+FINAL GOAL:
+
+Make the existing EcoPredict cinematic landing page feel smooth, responsive, and premium while preserving the current design and Earth animation.

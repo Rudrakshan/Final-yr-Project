@@ -1,0 +1,677 @@
+# ECOPREDICT — REPLACE 3D EARTH LOCATION SELECTOR
+
+Update the existing EcoPredict frontend.
+
+The current 3D Earth location-selection experience should be completely removed and replaced with a **modern, practical location-selection experience inspired by the UX pattern used by apps such as Blinkit and Zepto**.
+
+IMPORTANT:
+
+Do NOT copy their branding, colors, logos, assets, or exact interface.
+
+We are borrowing the **interaction pattern**, not their visual identity.
+
+EcoPredict must retain its own premium environmental/geospatial design language.
+
+---
+
+# 1. MAIN OBJECTIVE
+
+Current flow:
+
+Service
+→ 3D Earth
+→ rotate globe
+→ zoom
+→ select location
+→ confirm
+
+Replace it with:
+
+Service
+→ Choose Location
+→ Search / Current Location / Map
+→ Select location
+→ Refine pin
+→ Confirm
+→ Service analysis
+
+The location-selection experience should be:
+
+* fast
+* intuitive
+* mobile-friendly
+* professional
+* familiar
+* map-based
+* easy for a first-time user
+
+The user should understand what to do immediately.
+
+---
+
+# 2. REMOVE THE 3D EARTH FROM LOCATION SELECTION
+
+Remove the 3D Earth/globe from the location-selection page.
+
+Do NOT display:
+
+* rotating globe
+* 3D planet
+* Earth sphere
+* center reticle on a globe
+* WebGL Earth
+* geographic globe animation
+
+Do NOT leave an empty placeholder where the Earth was.
+
+Replace the entire area with a proper interactive map.
+
+IMPORTANT:
+
+If the cinematic Earth animation exists on the PUBLIC LANDING PAGE, preserve it.
+
+Only replace the Earth used for selecting a location.
+
+---
+
+# 3. LOCATION PAGE DESIGN
+
+Create a clean professional page.
+
+Background:
+
+Warm off-white / white.
+
+Use the EcoPredict visual system:
+
+* Off-white
+* White
+* Grey
+* Gold
+
+Avoid the previous:
+
+* neon cyan
+* dark glass
+* glowing borders
+* futuristic HUD
+* excessive gradients
+
+---
+
+# 4. PAGE HEADER
+
+At the top:
+
+← Back
+
+Choose your location
+
+Small supporting text:
+
+"Select a location to begin your environmental analysis."
+
+Keep this concise.
+
+---
+
+# 5. SEARCH-FIRST EXPERIENCE
+
+At the top of the page, create a prominent search field.
+
+Example:
+
+┌────────────────────────────────────────────┐
+│ 🔍  Search city, area or address           │
+└────────────────────────────────────────────┘
+
+Placeholder:
+
+"Search city, area or address"
+
+The search field should be:
+
+* white
+* clean border
+* subtle shadow
+* medium corner radius
+* easy to tap
+* large enough for mobile
+
+Do not make it look like an AI chatbot.
+
+---
+
+# 6. CURRENT LOCATION
+
+Immediately below the search field:
+
+┌────────────────────────────────────────────┐
+│ ◎  Use my current location                 │
+│    Detect your location automatically       │
+└────────────────────────────────────────────┘
+
+Use a simple location/navigation icon.
+
+When clicked:
+
+1. Request browser/device geolocation permission.
+2. Get latitude and longitude.
+3. Reverse geocode the coordinates.
+4. Move the map to that location.
+5. Update the selected location.
+6. Show the confirmation panel.
+
+Handle permission denial gracefully.
+
+Do not break the page if location access is denied.
+
+---
+
+# 7. MAP
+
+The majority of the screen should be occupied by a normal interactive map.
+
+Use a proper mapping solution compatible with the existing React/Vite project.
+
+Possible technologies:
+
+* MapLibre
+* Mapbox
+* Leaflet
+* another reliable map library
+
+Choose the most practical option for the current codebase.
+
+The map must support:
+
+* pan
+* zoom
+* touch gestures
+* markers
+* geographic labels
+* roads
+* cities
+* boundaries
+* normal map navigation
+
+The map should feel like a professional location-selection map.
+
+---
+
+# 8. MAP VISUAL STYLE
+
+The map itself should be visually clean.
+
+Prefer:
+
+* light map
+* muted roads
+* subtle geographic colors
+* readable city names
+* restrained map labels
+
+Do NOT use:
+
+* dark futuristic map
+* neon roads
+* glowing terrain
+* sci-fi map
+* excessive satellite effects
+
+The map should allow the selected location marker to stand out.
+
+---
+
+# 9. LOCATION PIN
+
+Use a fixed/clear selection marker.
+
+Preferred interaction:
+
+The user moves the map underneath the marker.
+
+The marker remains visually centered.
+
+Example:
+
+```
+         📍
+          |
+   ┌──────────────┐
+   │     MAP      │
+   │              │
+   │              │
+   └──────────────┘
+```
+
+As the user moves the map:
+
+latitude and longitude update.
+
+The selected location should therefore correspond to the center of the map.
+
+This is similar to the practical map-selection pattern used by delivery applications.
+
+---
+
+# 10. SEARCH RESULTS
+
+When the user searches:
+
+Example:
+
+"Coimbatore"
+
+Show clean autocomplete results:
+
+┌────────────────────────────────────────────┐
+│ 📍 Coimbatore                              │
+│    Tamil Nadu, India                       │
+├────────────────────────────────────────────┤
+│ 📍 Coimbatore North                        │
+│    Tamil Nadu, India                       │
+├────────────────────────────────────────────┤
+│ 📍 Coimbatore International Airport       │
+│    Coimbatore, Tamil Nadu                  │
+└────────────────────────────────────────────┘
+
+Selecting a result should:
+
+1. Close the suggestions.
+2. Move the map to that location.
+3. Update the center pin.
+4. Reverse-geocode if necessary.
+5. Update the location information panel.
+
+---
+
+# 11. SELECTED LOCATION PANEL
+
+At the bottom of the screen, create a clean confirmation panel.
+
+Desktop:
+
+Bottom-right or bottom-center.
+
+Mobile:
+
+Bottom sheet.
+
+Example:
+
+LOCATION SELECTED
+
+📍 Coimbatore, Tamil Nadu
+
+India
+
+11.0168° N
+76.9558° E
+
+Move the map to refine the location.
+
+[ Confirm Location ]
+
+The panel should be white with:
+
+* subtle shadow
+* thin grey border
+* medium radius
+* excellent spacing
+
+The primary button should use EcoPredict GOLD.
+
+---
+
+# 12. CONFIRM BUTTON
+
+Primary CTA:
+
+"Confirm Location"
+
+After confirmation:
+
+Go to the selected service's next step.
+
+For example:
+
+Renewable Energy
+→ Location
+→ Confirm Location
+→ Renewable Energy Analysis
+
+Site Suitability
+→ Location
+→ Confirm Location
+→ Site Suitability Analysis
+
+Risk & Future
+→ Location
+→ Confirm Location
+→ Risk Analysis
+
+Scenario Lab
+→ Location
+→ Confirm Location
+→ Scenario Lab
+
+Do NOT redirect every user to the same generic dashboard.
+
+---
+
+# 13. LOCATION STATE
+
+Create a reusable location state/context.
+
+Example structure:
+
+{
+name: "Coimbatore",
+region: "Tamil Nadu",
+country: "India",
+latitude: 11.0168,
+longitude: 76.9558
+}
+
+The selected location should be accessible throughout the application.
+
+Once confirmed, show the selected location in the application header.
+
+Example:
+
+📍 Coimbatore, Tamil Nadu
+
+[Change]
+
+---
+
+# 14. CHANGE LOCATION
+
+Every analysis page should allow the user to change the location.
+
+Example:
+
+┌──────────────────────────────────────┐
+│ 📍 Coimbatore, Tamil Nadu    Change │
+└──────────────────────────────────────┘
+
+Clicking "Change" should return to the location selector.
+
+Do not make the user restart the entire workflow.
+
+---
+
+# 15. MOBILE UX
+
+This is extremely important.
+
+On mobile:
+
+Top:
+
+← Back
+
+Choose your location
+
+Search bar
+
+Use my current location
+
+Then:
+
+Large interactive map
+
+Then:
+
+Bottom sheet:
+
+Location Selected
+Coimbatore, Tamil Nadu
+
+11.0168° N · 76.9558° E
+
+[ Confirm Location ]
+
+The map should remain interactive while the bottom sheet is visible.
+
+Support:
+
+* touch pan
+* pinch zoom
+* tap
+* search
+* location permission
+
+---
+
+# 16. LOADING STATES
+
+Add professional loading states.
+
+When searching:
+
+"Searching locations..."
+
+When detecting location:
+
+"Finding your location..."
+
+When reverse geocoding:
+
+"Identifying location..."
+
+Do not show generic:
+
+"AI is thinking..."
+
+This is a location service, not an AI generation process.
+
+---
+
+# 17. ERROR STATES
+
+Handle:
+
+* location permission denied
+* location unavailable
+* network failure
+* no search results
+* reverse-geocoding failure
+
+Example:
+
+"Couldn't identify this location."
+
+Then offer:
+
+"Try again"
+
+or
+
+"Search manually"
+
+The interface must never become stuck.
+
+---
+
+# 18. MAP PROVIDER ARCHITECTURE
+
+Do not hard-code the application to a single provider if it can be avoided.
+
+Create a reusable map component:
+
+`LocationMap`
+
+And separate location logic:
+
+`LocationSelector`
+
+`LocationSearch`
+
+`LocationContext`
+
+`ReverseGeocoder`
+
+This will allow us to replace the map/geocoding provider later if required.
+
+---
+
+# 19. MOCK DATA FOR NOW
+
+If real geocoding/search APIs are not currently connected, use realistic mock data temporarily.
+
+However:
+
+Keep all mock data inside a clear data/service layer.
+
+Do NOT scatter mock location data throughout JSX.
+
+The architecture should make it easy to replace:
+
+MOCK LOCATION DATA
+
+with:
+
+REAL GEOCODING API
+
+later.
+
+---
+
+# 20. DO NOT REBUILD THE REST OF THE APPLICATION
+
+This task is specifically about the location-selection experience.
+
+Do NOT unnecessarily modify:
+
+* authentication
+* service hub
+* analysis pages
+* Scenario Lab
+* AI Assistant
+* existing routes
+* existing landing-page Earth animation
+
+Only make supporting changes where required for location state/navigation.
+
+---
+
+# 21. VISUAL QUALITY
+
+The final page should NOT look like a generic AI-generated map component.
+
+Avoid:
+
+* huge rounded rectangles
+* excessive shadows
+* excessive glassmorphism
+* random gradients
+* floating decorative elements
+* unnecessary icons
+* neon colors
+
+Use:
+
+* whitespace
+* clear typography
+* professional map
+* subtle borders
+* restrained shadows
+* gold accent
+* strong hierarchy
+
+The location page should feel like a real production application.
+
+---
+
+# 22. FINAL USER EXPERIENCE
+
+The intended experience is:
+
+USER SELECTS SERVICE
+
+↓
+
+"Choose your location"
+
+↓
+
+Search a city, area or address
+
+OR
+
+Use my current location
+
+↓
+
+Interactive map opens/updates
+
+↓
+
+User can move map underneath the location pin
+
+↓
+
+Location name and coordinates update
+
+↓
+
+User confirms
+
+↓
+
+Service-specific analysis begins
+
+---
+
+# 23. IMPORTANT DESIGN REFERENCE
+
+Use the UX PRINCIPLE of apps like:
+
+Blinkit
+Zepto
+Google Maps
+
+But DO NOT copy their visual branding.
+
+Borrow only the interaction principles:
+
+* search first
+* current location
+* map confirmation
+* clear selected address
+* easy correction
+* mobile-first interaction
+* fast confirmation
+
+EcoPredict should still look like a:
+
+PREMIUM ENVIRONMENTAL INTELLIGENCE PLATFORM.
+
+---
+
+# 24. FINAL CHECK
+
+Before finishing:
+
+* Remove the 3D Earth from the location-selection page.
+* Make sure there is a real interactive map.
+* Make search functional.
+* Make current-location interaction functional or cleanly mocked.
+* Make the center pin/selection interaction clear.
+* Make location information update.
+* Make Confirm Location work.
+* Make Change Location work.
+* Preserve the selected location between pages.
+* Make the experience responsive.
+* Remove leftover Earth-selector code that is no longer needed.
+* Remove leftover futuristic/neon styling.
+* Check for console errors.
+* Check all navigation paths.
+
+The final result should feel like:
+
+"Open a service → quickly choose where on Earth → confirm → analyze."
+
+It should be practical enough for everyday use while maintaining EcoPredict's premium environmental intelligence identity.

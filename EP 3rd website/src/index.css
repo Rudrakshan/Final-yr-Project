@@ -1,0 +1,380 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
+
+:root {
+  --font-heading: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-editorial: 'Newsreader', Georgia, serif;
+
+  /* Primary Light Theme Backgrounds */
+  --bg-main: #F7F6F2;
+  --bg-card: #FFFFFF;
+  --bg-subtle: #F1F0EB;
+  --bg-hover: #ECEAE3;
+  --bg-gold-subtle: #F4EEDC;
+
+  /* Primary Text */
+  --text-main: #242424;
+  --text-secondary: #66645F;
+  --text-muted: #8A8882;
+  --text-on-gold: #FFFFFF;
+
+  /* Gold Brand Accents */
+  --gold-primary: #B08D3C;
+  --gold-dark: #8E712C;
+  --gold-light: #D7C28A;
+  --gold-border: rgba(176, 141, 60, 0.35);
+
+  /* Neutral Warm Greys */
+  --border-grey: #D9D7D0;
+  --border-light: #E5E3DD;
+  --grey-dark: #3A3A37;
+  --grey-medium: #77756F;
+
+  /* Functional Status Accents (Restrained & Scientific) */
+  --accent-emerald: #2E7D5B;
+  --accent-blue: #2B6CB0;
+  --accent-amber: #B7791F;
+  --accent-red: #C53030;
+
+  /* Clean Professional Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.03);
+  --shadow-modal: 0 20px 50px -10px rgba(0, 0, 0, 0.15), 0 10px 20px -5px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+/* Custom Clean Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-subtle);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-grey);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--grey-medium);
+}
+
+/* Professional Surface Card */
+.editorial-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-grey);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.editorial-card:hover {
+  border-color: var(--gold-light);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Buttons */
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background-color: var(--gold-primary);
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid var(--gold-dark);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 3px rgba(176, 141, 60, 0.25);
+  text-decoration: none;
+}
+
+.btn-gold:hover {
+  background-color: var(--gold-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(142, 113, 44, 0.3);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background-color: #FFFFFF;
+  color: var(--text-main);
+  font-weight: 500;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-grey);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-outline:hover {
+  background-color: var(--bg-subtle);
+  border-color: var(--grey-medium);
+}
+
+/* Legacy btn-primary remapped to gold for consistency */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background-color: var(--gold-primary);
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid var(--gold-dark);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(176, 141, 60, 0.25);
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--gold-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(142, 113, 44, 0.3);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background-color: var(--bg-subtle);
+  color: var(--text-main);
+  font-weight: 500;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-grey);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  background-color: #FFFFFF;
+  border-color: var(--gold-primary);
+}
+
+/* Subtle Badge */
+.badge-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background-color: var(--bg-gold-subtle);
+  border: 1px solid var(--gold-border);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gold-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-neutral {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-grey);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--grey-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================================
+   LANDING PAGE — CINEMATIC DARK THEME CLASSES
+   (Only used on the dark scroll-driven Earth landing)
+   ============================================================ */
+
+/* Glassmorphism panel for cinematic overlay scenes */
+.glass-panel {
+  background: rgba(8, 12, 22, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Premium earth-toned gradient headline text */
+.gradient-text {
+  background: linear-gradient(135deg, #FFFFFF 0%, #E8DFC8 40%, #C4A96E 80%, #D4B87A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Cinematic edge vignette overlay on canvas */
+.canvas-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(3, 5, 10, 0.55) 100%
+  );
+}
+
+@media (max-width: 768px) {
+  .glass-panel {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .live-indicator {
+    animation: none !important;
+  }
+}
+
+/* Animated live indicator pulse dot */
+.live-indicator {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #6DBF87;
+  animation: liveIndicatorPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* Subtle scroll-chevron bounce */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(4px); }
+}
+
+/* Live indicator pulse animation */
+@keyframes liveIndicatorPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.75); }
+}
+
+/* Dark context button overrides — used on the landing page dark background */
+/* These override the light-background defaults for btn-primary / btn-secondary */
+.dark-cta .btn-primary,
+.btn-primary-dark {
+  background-color: #C4A96E;
+  border-color: #B08D3C;
+  color: #1A1610;
+  box-shadow: 0 2px 10px rgba(196, 169, 110, 0.3);
+}
+
+.btn-primary-dark:hover {
+  background-color: #D4B87A;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(196, 169, 110, 0.4);
+}
+
+/* Outlined secondary button for dark backgrounds */
+.btn-ghost-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-ghost-dark:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #FFFFFF;
+}
+
+/* ============================================================ */
+
+/* Auth page form fade animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Range input styling for Scenario Lab */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--border-grey);
+  height: 4px;
+  border-radius: 2px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--gold-primary);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  background: var(--gold-dark);
+}
